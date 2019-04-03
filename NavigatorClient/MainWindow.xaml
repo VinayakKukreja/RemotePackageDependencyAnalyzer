@@ -1,0 +1,214 @@
+﻿<Window x:Class="Navigator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Navigator"
+        mc:Ignorable="d"
+        Closed="Window_Closed"
+        Title="Remote Package Dependency Analysis" Height="750" Width="750">
+    <!-- 
+    /////////////////////////////////////////////////////////////////////////////
+    // MainWindow.xaml - Demonstrates the GUI for the Client side             //
+    // ver 1.0                                                               //
+    // Author: Vinayak Kukreja                                              //
+    /////////////////////////////////////////////////////////////////////////
+    -->
+    <Window.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="DarkSlateBlue" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="DarkSlateBlue" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Foreground" Value="DarkSlateBlue" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="Foreground" Value="DarkSlateBlue" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+    </Window.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="101*" />
+        </Grid.ColumnDefinitions>
+        <TabControl Name="tabs" FontFamily="tahoma" FontWeight="Bold" FontSize="16" Background="#ddd"
+                    Grid.ColumnSpan="2">
+            <TabItem Header="Find Path" Padding="10 5">
+                <DockPanel>
+
+                    <Grid DockPanel.Dock="Top">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <Label Grid.Row="0" Grid.Column="0" Width="20" />
+                        <Button Grid.Row="0" Grid.Column="1" x:Name="ConnectButton" Height="27" Width="75"
+                                Click="ConnectButton_Click" Padding="2">
+                            Connect
+                        </Button>
+                        <Label Grid.Row="0" Grid.Column="2" Width="20" />
+                        <Button Grid.Row="0" Grid.Column="3" x:Name="TopButton" IsEnabled="False" Height="27"
+                                Width="200" Click="RemoteTop_Click" Padding="2">
+                            Get Top Files and Folders
+                        </Button>
+                        <Label Grid.Row="0" Grid.Column="4" Width="20" />
+                        <Button Grid.Row="0" Grid.Column="5" x:Name="UpButton" IsEnabled="False" Height="27" Width="75"
+                                Click="RemoteUp_Click" Padding="2">
+                            Up
+                        </Button>
+                        <Label Grid.Row="0" Grid.Column="6" Width="20" />
+                        <Button Grid.Row="0" Grid.Column="7" x:Name="AnalButton" IsEnabled="False" Height="27"
+                                Width="75" Click="AnalButton_Click" Padding="2">
+                            Analyze
+                        </Button>
+                        <Label Grid.Row="0" Grid.Column="8" Width="20" />
+                        <Button Grid.Row="0" Grid.Column="9" x:Name="AnalResButton" IsEnabled="False" Height="27"
+                                Width="120" Click="AnalButtonResult_Click" Padding="2">
+                            View Analysis
+                        </Button>
+                        <Label Grid.Row="0" Grid.Column="10" Width="20" />
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="11*" />
+                            <ColumnDefinition Width="15*" />
+                            <ColumnDefinition Width="344*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="5" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0" Grid.ColumnSpan="3" />
+                        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Background="#999" Grid.ColumnSpan="3" />
+                        <Label Grid.Row="2" Grid.ColumnSpan="3">Directories in Path:</Label>
+                        <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" Background="#999" Grid.ColumnSpan="3" />
+                        <ListBox Grid.Row="4" x:Name="remoteDirs" x:FieldModifier="public" Margin="5,5,5,6"
+                                 FontWeight="Medium" FontSize="12" MouseDoubleClick="remoteDirs_MouseDoubleClick"
+                                 IsEnabled="False" Grid.ColumnSpan="3" />
+                        <GridSplitter Grid.Row="5" HorizontalAlignment="Stretch" Background="#999" Grid.ColumnSpan="3" />
+                        <Label Grid.Row="6" Grid.ColumnSpan="3" Grid.RowSpan="3">Files in Path:</Label>
+                        <GridSplitter Grid.Row="7" HorizontalAlignment="Stretch" Background="#999" Grid.ColumnSpan="3" />
+                        <ListBox Grid.Row="8" x:Name="remoteFiles" x:FieldModifier="public"
+                                 MouseDoubleClick="remoteFiles_MouseDoubleClick" Margin="5,6,5,5" IsEnabled="False"
+                                 FontWeight="Medium" FontSize="12" SelectionMode="Extended" Grid.ColumnSpan="3" />
+                        <GridSplitter Grid.Row="9" HorizontalAlignment="Stretch" Background="#999" Grid.ColumnSpan="3" />
+
+                        <Grid Grid.Row="10" Grid.ColumnSpan="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" HorizontalAlignment="Center" Margin="4,10,4,10">Client:</Label>
+                            <TextBlock Grid.Column="1" x:Name="ClientResult" x:FieldModifier="public"
+                                       TextAlignment="Center" FontWeight="Medium" FontSize="12" Height="20"
+                                       LineHeight="10" HorizontalAlignment="Stretch" Margin="0,0,8,11"
+                                       TextWrapping="Wrap" Background="White" />
+                            <Label Grid.Column="2" HorizontalAlignment="Center" Margin="4,10,4,10">Server:</Label>
+                            <TextBlock Grid.Column="3" x:Name="ServerResult" x:FieldModifier="public"
+                                       TextAlignment="Center" FontWeight="Medium" FontSize="12" Height="20"
+                                       LineHeight="10" HorizontalAlignment="Stretch" Margin="0,0,8,11"
+                                       TextWrapping="Wrap" Background="White" />
+                        </Grid>
+
+
+                        <GridSplitter Grid.Row="11" HorizontalAlignment="Stretch" Background="#999" Grid.ColumnSpan="3" />
+                        <Button Grid.Row="12" HorizontalAlignment="Center" x:Name="InfoButton" Height="27" Width="120"
+                                Click="Info_Click" Padding="2" Grid.Column="2">
+                            Features
+                        </Button>
+                        <GridSplitter Grid.Row="13" HorizontalAlignment="Stretch" Background="#999" Grid.ColumnSpan="3" />
+                        <TextBlock Grid.Row="14" Grid.ColumnSpan="3" Width="Auto" Height="Auto" TextAlignment="Justify"
+                                   Foreground="Black" FontWeight="Medium" FontSize="12" LineHeight="10"
+                                   HorizontalAlignment="Stretch" Margin="0,0,8,11" TextWrapping="Wrap">
+                            Note:  Automated Test Suite loads all values but as per design I have limited Analysis Result Tab only to View Analysis Button Click's. Please press button to view result during Automated Test Case.
+                        </TextBlock>
+                        <GridSplitter Grid.Row="15" HorizontalAlignment="Stretch" Background="#999" Grid.ColumnSpan="3" />
+                    </Grid>
+                </DockPanel>
+
+
+            </TabItem>
+
+
+            <TabItem Name="AnalysisRes" Header="Analysis Results" Padding="10 5" Focusable="False">
+                <DockPanel>
+
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Height="27" Grid.ColumnSpan="2" Margin="0,6">Analysis Result:</Label>
+
+                        <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                            <TextBlock HorizontalAlignment="Stretch" x:Name="AnalResult" x:FieldModifier="public"
+                                       FontWeight="Medium" FontSize="12" LineStackingStrategy="MaxHeight"
+                                       LineHeight="10" TextWrapping="Wrap" Margin="4,8,4,8" Background="White" />
+                        </ScrollViewer>
+
+                    </Grid>
+
+                </DockPanel>
+
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

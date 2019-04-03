@@ -1,0 +1,1 @@
+devenv RemoteCodeAnalyzer.sln /rebuild debug
